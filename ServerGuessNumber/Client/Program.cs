@@ -21,7 +21,7 @@ var buffer = new byte[1024];
 var bufferForMessage = new byte[1024];
 bool cap = true;
 int i = 0;
-while (true)
+while (cap)
 {
     Console.WriteLine("Guess number from 7 to 14");
     //var size = await clientSocket.ReceiveAsync(buffer);
@@ -46,12 +46,26 @@ while (true)
         }
         else
         {
-            Console.WriteLine("Incorrect input!");
+            Console.WriteLine("Incorrect input! ONY NUMBER");
         }
 
         var size = await clientSocket.ReceiveAsync(bufferForMessage);
-        var message = Encoding.Unicode.GetString(bufferForMessage);
+        string message = Encoding.Unicode.GetString(bufferForMessage);
         Console.WriteLine(message);
+        if (message.Contains("WIN!!!"))
+        {
+
+            cap = false;
+        }
+        else
+        {
+            if (i == 4)
+            {
+                Console.WriteLine("Lose!");
+                cap = false;
+            }
+            i++;
+        }
     }
     
 
