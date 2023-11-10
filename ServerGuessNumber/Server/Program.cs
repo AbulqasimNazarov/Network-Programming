@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 
 
-const string ip = "localhost"; 
+const string ip = "192.168.1.7"; 
 const int port = 8080;
 
 IPAddress address = IPAddress.Parse(ip);
@@ -35,11 +35,27 @@ while (true)
     {
         try
         {
-            int randomNumber = Random.Shared.Next(12, 40);
+            int randomNumber = Random.Shared.Next(7, 14);
             while (true)
             {
-                await clientSocket.SendAsync(new byte[] { (byte)randomNumber });
-                Thread.Sleep(1000);
+                var size = await clientSocket.ReceiveAsync(buffer);
+                //var size = await clientSocket.SendAsync(buffer);
+                if (buffer[0] > (byte)randomNumber)
+                {
+                    var message = Encoding.Unicode.GetBytes("More!");
+                    await clientSocket.SendAsync(message);
+                }
+                else if (buffer[0] < (byte)randomNumber)
+                {
+                    var message = Encoding.Unicode.GetBytes("Less!");
+                    await clientSocket.SendAsync(message);
+                }
+                else 
+                {
+                    var message = Encoding.Unicode.GetBytes("WIN!!!");
+                    await clientSocket.SendAsync(message);
+                }
+                Thread.Sleep(100);
             }
         }
         catch (SocketException e)
