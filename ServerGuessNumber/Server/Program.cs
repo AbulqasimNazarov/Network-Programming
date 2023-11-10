@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 
 
-const string ip = "192.168.1.7"; 
+const string ip = "localhost"; 
 const int port = 8080;
 
 IPAddress address = IPAddress.Parse(ip);
